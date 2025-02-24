@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NamasteLang</title>
+    <style>
+        /* General Styles */
+        
+        * {
+            cursor: none;
+            /* Disable default cursor */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000514;
+            color: white;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+            /* Prevent scrolling during loader */
+        }
+        /* Loader Styles */
+        
+        #splash {
+            background: #cc1f2f;
+            background-repeat: repeat-y;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            animation: splash 3s ease-in;
+            animation-fill-mode: forwards;
+            -webkit-animation-fill-mode: forwards;
+            z-index: 1000;
+            /* Ensure loader is on top */
+        }
+        
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%, 0);
+        }
+        
+        #loader:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            margin-left: -8px;
+            bottom: -170px;
+            width: 3px;
+            background: #fff;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+            height: 200px;
+        }
+        
+        #loader:before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            margin-left: 8px;
+            bottom: -190px;
+            width: 3px;
+            background: #000;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, .2) 0%, rgba(0, 0, 0, .2) 50%, rgba(0, 0, 0, 0) 100%);
+            height: 200px;
+        }
+        
+        #splash .anim {
+            height: 100%;
+            position: absolute;
+            left: 50%;
+            width: 100px;
+            transform: translate(-50%, 100%);
+            animation: loader 4s linear;
+            animation-fill-mode: forwards;
+            -webkit-animation-fill-mode: forwards;
+        }
+        
+        @keyframes loader {
+            0% {
+                transform: translate(-50%, 110%);
+            }
+            30% {
+                transform: translate(-50%, 50%);
+            }
+            100% {
+                transform: translate(-50%, 0%);
+            }
+        }
+        
+        @keyframes splash {
+            0% {
+                transform: translate(0%, 0%);
+            }
+            50% {
+                transform: translate(0%, 0%);
+            }
+            100% {
+                transform: translate(0%, -100%);
+            }
+        }
+        /* Container Styles */
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            /* Required for positioning .pranam */
+        }
+        /* Pranam Image Styles */
+        
+        .pranam {
+            width: 200px;
+            /* Smaller size */
+            height: auto;
+            /* Maintain aspect ratio */
+            margin-bottom: 10px;
+            /* Space between .pranam and logo */
+        }
+        /* Logo Styles */
+        
+        .logo {
+            width: 100%;
+            max-width: 1000px;
+            /* Increased size */
+            height: auto;
+            /* Maintain aspect ratio */
+            margin-bottom: 20px;
+            /* Space below the logo */
+        }
+        /* Subtitle Styles with Typing Animation */
+        
+        .subtitle {
+            font-size: 24px;
+            margin: 20px 0;
+            overflow: hidden;
+            /* Hide overflow */
+            white-space: nowrap;
+            /* Keep text in one line */
+            border-right: 2px solid white;
+            /* Cursor effect */
+            animation: typing 6s steps(30, end) infinite, blink-cursor 0.75s step-end infinite;
+            width: 30ch;
+            /* Set width based on number of characters */
+        }
+        
+        @keyframes typing {
+            from {
+                width: 0;
+                /* Start with no width */
+            }
+            to {
+                width: 30ch;
+                /* Expand to full width (30 characters) */
+            }
+        }
+        
+        @keyframes blink-cursor {
+            from,
+            to {
+                border-right-color: transparent;
+                /* Blinking cursor effect */
+            }
+            50% {
+                border-right-color: white;
+            }
+        }
+        /* Button Styles */
+        
+        .buttons {
+            margin-top: 40px;
+        }
+        
+        button {
+            appearance: none;
+            background-color: #FFFFFF;
+            border-radius: 40em;
+            border-style: none;
+            box-shadow: #ADCFFF 0 -12px 6px inset;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: none;
+            /* Disable default cursor for button */
+            display: inline-block;
+            font-family: -apple-system, sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -.24px;
+            margin: 0;
+            outline: none;
+            padding: 1rem 1.3rem;
+            quotes: auto;
+            text-align: center;
+            text-decoration: none;
+            transition: all .15s;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        
+        button:hover {
+            background-color: #FFC229;
+            box-shadow: #FF6314 0 -6px 8px inset;
+            transform: scale(1.125);
+        }
+        
+        button:active {
+            transform: scale(1.025);
+        }
+        /* Custom Cursor Styles */
+        
+        .cursor {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            border: 1px solid white;
+            /* Default cursor color */
+            transition: all 200ms ease-out;
+            position: fixed;
+            pointer-events: none;
+            left: 0;
+            top: 0;
+            transform: translate(calc(-50% + 15px), -50%);
+            z-index: 1001;
+            /* Ensure cursor is above everything */
+        }
+        
+        .cursor2 {
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+            background-color: white;
+            /* Default cursor color */
+            opacity: .3;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            transition: width .3s, height .3s, opacity .3s;
+            z-index: 1001;
+            /* Ensure cursor is above everything */
+        }
+        
+        .hover {
+            border-color: red;
+            /* Cursor color when hovering over button */
+        }
+        
+        .logo-hover {
+            border-color: yellow;
+            /* Cursor color when hovering over logo */
+        }
+        
+        .cursorinnerhover {
+            width: 50px;
+            height: 50px;
+            opacity: .5;
+        }
+        /* Responsive Styles for Mobile Devices */
+        
+        @media (max-width: 768px) {
+            .pranam {
+                width: 150px;
+                /* Smaller size for tablets */
+                margin-bottom: 5px;
+                /* Adjust spacing for smaller screens */
+            }
+            .logo {
+                max-width: 100%;
+                /* Make logo fit smaller screens */
+            }
+            .subtitle {
+                font-size: 18px;
+                /* Smaller font size for mobile */
+                width: 20ch;
+                /* Adjust width for smaller screens */
+            }
+            button {
+                font-size: 1rem;
+                /* Smaller button text */
+                padding: 0.8rem 1rem;
+                /* Smaller padding */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .pranam {
+                width: 120px;
+                /* Smaller size for very small screens */
+                margin-bottom: 5px;
+                /* Adjust spacing for very small screens */
+            }
+            .subtitle {
+                font-size: 16px;
+                /* Even smaller font size for very small screens */
+                width: 15ch;
+                /* Adjust width for very small screens */
+            }
+            button {
+                font-size: 0.9rem;
+                /* Smaller button text */
+                padding: 0.7rem 0.9rem;
+                /* Smaller padding */
+            }
+        }
+    </style>
+</head>
+<link rel="icon" type="image/png" sizes="16x16" href="download__11_-removebg-preview.png">
+<link rel="icon" type="image/png" sizes="32x32" href="download__11_-removebg-preview.png">
+<link rel="apple-touch-icon" sizes="180x180" href="download__11_-removebg-preview.png">
+<link rel="manifest" href="download__11_-removebg-preview.png">
+
+
+<body>
+    <!-- Loader -->
+    <div id="splash">
+        <div class="anim">
+            <div id="loader">
+                <svg version="1.1" width="60px" height="70px" viewBox="0 0 60 70">
+                    <defs>
+                        <filter id="f1" x="0" y="0">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+                        </filter>
+                    </defs>
+                    <g id="airplane">
+                        <path fill="#000" d="M0.677,20.977l4.355,1.631c0.281,0.104,0.579,0.162,0.88,0.16l9.76-0.004L30.46,41.58c0.27,0.34,0.679,0.545,1.112,0.541
+                        h1.87c0.992,0,1.676-0.992,1.322-1.918l-6.643-17.439l6.914,0.002l6.038,6.037c0.265,0.266,0.624,0.412,0.999,0.418l1.013-0.004
+                        c1.004-0.002,1.684-1.012,1.312-1.938l-2.911-7.277l2.912-7.278c0.372-0.928-0.313-1.941-1.313-1.938h1.017
+                        c-0.375,0-0.732,0.15-0.996,0.414l-6.039,6.039h-6.915l6.646-17.443c0.354-0.926-0.33-1.916-1.321-1.914l-1.87-0.004
+                        c-0.439,0.004-0.843,0.203-1.112,0.543L15.677,17.24l-9.765-0.002c-0.3,0.002-0.597,0.055-0.879,0.16L0.678,19.03
+                        C-0.225,19.36-0.228,20.637,0.677,20.977z" transform="translate(44,0) rotate(90 0 0)" />
+                    </g>
+                    <g id="shadow" transform="scale(.9)">
+                        <path fill="#000" fill-opacity="0.3" d="M0.677,20.977l4.355,1.631c0.281,0.104,0.579,0.162,0.88,0.16l9.76-0.004L30.46,41.58c0.27,0.34,0.679,0.545,1.112,0.541
+                        h1.87c0.992,0,1.676-0.992,1.322-1.918l-6.643-17.439l6.914,0.002l6.038,6.037c0.265,0.266,0.624,0.412,0.999,0.418l1.013-0.004
+                        c1.004-0.002,1.684-1.012,1.312-1.938l-2.911-7.277l2.912-7.278c0.372-0.928-0.313-1.941-1.313-1.938h1.017
+                        c-0.375,0-0.732,0.15-0.996,0.414l-6.039,6.039h-6.915l6.646-17.443c0.354-0.926-0.33-1.916-1.321-1.914l-1.87-0.004
+                        c-0.439,0.004-0.843,0.203-1.112,0.543L15.677,17.24l-9.765-0.002c-0.3,0.002-0.597,0.055-0.879,0.16L0.678,19.03
+                        C-0.225,19.36-0.228,20.637,0.677,20.977z" transform="translate(64,30) rotate(90 0 0)" filter="url(#f1)" />
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Pranam Image -->
+        <div class="pranam">
+            <img src="download__11_-removebg-preview.png" alt="namaste" class="pranam">
+        </div>
+
+        <!-- Logo -->
+        <img src="Namaste-Lang-19-2-2025 (4).png" alt="NamasteLang" class="logo">
+
+        <!-- Subtitle and Button -->
+        <div class="subtitle">A Hindi Programming Language</div>
+        <div class="buttons">
+            <button onclick="enterPlayground()">▶ Enter Playground</button>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor2"></div>
+
+    <script>
+        var _0x20f58e = _0x3052;
+        (function(_0x1f84be, _0x49b94e) {
+            var _0x458654 = _0x3052,
+                _0x4d1514 = _0x1f84be();
+            while (!![]) {
+                try {
+                    var _0x6f3658 = parseInt(_0x458654(0x16b)) / 0x1 * (parseInt(_0x458654(0x184)) / 0x2) + parseInt(_0x458654(0x172)) / 0x3 + -parseInt(_0x458654(0x16f)) / 0x4 * (parseInt(_0x458654(0x169)) / 0x5) + -parseInt(_0x458654(0x166)) / 0x6 * (-parseInt(_0x458654(0x186)) / 0x7) + -parseInt(_0x458654(0x170)) / 0x8 + parseInt(_0x458654(0x16c)) / 0x9 + parseInt(_0x458654(0x175)) / 0xa;
+                    if (_0x6f3658 === _0x49b94e) break;
+                    else _0x4d1514['push'](_0x4d1514['shift']());
+                } catch (_0x4793a5) {
+                    _0x4d1514['push'](_0x4d1514['shift']());
+                }
+            }
+        }(_0x2ae5, 0x6ba66));
+
+        function _0x2ae5() {
+            var _0x4c2d16 = ['touchmove', '18QOqYDM', 'add', 'playground.html', '30JbDJEo', 'clientY', '94SDapRy', '2976444sMDbtw', 'mousedown', 'querySelector', '220312WYEwvD', '6060672iZNRMG', 'touchend', '158226wXNZNQ', 'left', '.logo', '1292720YCbXFr', 'mouseleave', 'transform', 'logo-hover', 'hover', 'style', 'touches', 'mousemove', 'cursorinnerhover', 'click', 'clientX', 'remove', '.cursor2', '.cursor', 'classList', '13290IUyApX', 'location', '913794XYCJst', 'touchstart', 'addEventListener', 'translate3d(calc(', 'href', 'mouseover'];
+            _0x2ae5 = function() {
+                return _0x4c2d16;
+            };
+            return _0x2ae5();
+        }
+
+        function enterPlayground() {
+            var _0xc766aa = _0x3052;
+            window[_0xc766aa(0x185)][_0xc766aa(0x163)] = _0xc766aa(0x168);
+        }
+        var cursor = document[_0x20f58e(0x16e)](_0x20f58e(0x182)),
+            cursorinner = document[_0x20f58e(0x16e)](_0x20f58e(0x181)),
+            button = document['querySelector']('button'),
+            logo = document[_0x20f58e(0x16e)](_0x20f58e(0x174));
+
+        function moveCursor(_0x41478e, _0x602aed) {
+            var _0x59d9b4 = _0x20f58e;
+            cursor[_0x59d9b4(0x17a)][_0x59d9b4(0x177)] = _0x59d9b4(0x162) + _0x41478e + 'px\x20-\x2050%),\x20calc(' + _0x602aed + 'px\x20-\x2050%),\x200)', cursorinner[_0x59d9b4(0x17a)][_0x59d9b4(0x173)] = _0x41478e + 'px', cursorinner[_0x59d9b4(0x17a)]['top'] = _0x602aed + 'px';
+        }
+
+        function _0x3052(_0x2c77a1, _0x15a5c1) {
+            var _0x2ae5ad = _0x2ae5();
+            return _0x3052 = function(_0x305286, _0x2c3ab9) {
+                _0x305286 = _0x305286 - 0x162;
+                var _0x2cb51b = _0x2ae5ad[_0x305286];
+                return _0x2cb51b;
+            }, _0x3052(_0x2c77a1, _0x15a5c1);
+        }
+        document[_0x20f58e(0x188)](_0x20f58e(0x17c), function(_0x321305) {
+            var _0x1c498a = _0x20f58e;
+            moveCursor(_0x321305[_0x1c498a(0x17f)], _0x321305[_0x1c498a(0x16a)]);
+        }), document[_0x20f58e(0x188)](_0x20f58e(0x165), function(_0x35ac19) {
+            var _0x4792c9 = _0x20f58e,
+                _0x4fae85 = _0x35ac19[_0x4792c9(0x17b)][0x0];
+            moveCursor(_0x4fae85['clientX'], _0x4fae85[_0x4792c9(0x16a)]);
+        }), document['addEventListener'](_0x20f58e(0x16d), function() {
+            var _0xf99f22 = _0x20f58e;
+            cursor[_0xf99f22(0x183)][_0xf99f22(0x167)](_0xf99f22(0x17e)), cursorinner['classList'][_0xf99f22(0x167)]('cursorinnerhover');
+        }), document[_0x20f58e(0x188)]('mouseup', function() {
+            var _0x32ce05 = _0x20f58e;
+            cursor[_0x32ce05(0x183)][_0x32ce05(0x180)]('click'), cursorinner[_0x32ce05(0x183)][_0x32ce05(0x180)](_0x32ce05(0x17d));
+        }), document[_0x20f58e(0x188)](_0x20f58e(0x187), function() {
+            var _0x548d0d = _0x20f58e;
+            cursor[_0x548d0d(0x183)][_0x548d0d(0x167)](_0x548d0d(0x17e)), cursorinner[_0x548d0d(0x183)]['add']('cursorinnerhover');
+        }), document[_0x20f58e(0x188)](_0x20f58e(0x171), function() {
+            var _0xf654a8 = _0x20f58e;
+            cursor[_0xf654a8(0x183)][_0xf654a8(0x180)](_0xf654a8(0x17e)), cursorinner[_0xf654a8(0x183)][_0xf654a8(0x180)]('cursorinnerhover');
+        }), button[_0x20f58e(0x188)](_0x20f58e(0x164), () => {
+            var _0x5669db = _0x20f58e;
+            cursor[_0x5669db(0x183)]['add'](_0x5669db(0x179));
+        }), button['addEventListener'](_0x20f58e(0x176), () => {
+            var _0x57f705 = _0x20f58e;
+            cursor[_0x57f705(0x183)][_0x57f705(0x180)](_0x57f705(0x179));
+        }), button[_0x20f58e(0x188)]('touchstart', () => {
+            var _0x206ba5 = _0x20f58e;
+            cursor[_0x206ba5(0x183)]['add']('hover');
+        }), button['addEventListener'](_0x20f58e(0x171), () => {
+            var _0x559471 = _0x20f58e;
+            cursor['classList'][_0x559471(0x180)](_0x559471(0x179));
+        }), logo['addEventListener'](_0x20f58e(0x164), () => {
+            var _0x3f7a0c = _0x20f58e;
+            cursor[_0x3f7a0c(0x183)][_0x3f7a0c(0x167)](_0x3f7a0c(0x178));
+        }), logo['addEventListener'](_0x20f58e(0x176), () => {
+            var _0x3ffead = _0x20f58e;
+            cursor[_0x3ffead(0x183)][_0x3ffead(0x180)](_0x3ffead(0x178));
+        }), logo[_0x20f58e(0x188)](_0x20f58e(0x187), () => {
+            var _0x1e3e24 = _0x20f58e;
+            cursor[_0x1e3e24(0x183)]['add'](_0x1e3e24(0x178));
+        }), logo[_0x20f58e(0x188)](_0x20f58e(0x171), () => {
+            var _0xf7229a = _0x20f58e;
+            cursor[_0xf7229a(0x183)][_0xf7229a(0x180)]('logo-hover');
+        });
+    </script>
+</body>
+
+</html>
